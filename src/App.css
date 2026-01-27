@@ -1,0 +1,854 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.app {
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .grand-staff {
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .staff {
+    height: 160px;
+  }
+  
+  .brace {
+    width: 15px;
+    border-radius: 8px 0 0 8px;
+    height: 400px;
+  }
+  
+  .staff-line {
+    left: 30px;
+    right: 15px;
+    height: 2px;
+  }
+  
+  .staff-line:nth-child(4) { top: 50px; }
+  .staff-line:nth-child(5) { top: 70px; }
+  .staff-line:nth-child(6) { top: 90px; }
+  .staff-line:nth-child(7) { top: 110px; }
+  .staff-line:nth-child(8) { top: 130px; }
+  
+  .extra-line {
+    left: 30px;
+    right: 15px;
+  }
+  
+  .clef.treble {
+    font-size: 2.5rem;
+    left: 30px;
+    top: 10px;
+    height: 140px;
+  }
+  
+  .clef.bass {
+    font-size: 2.3rem;
+    left: 30px;
+    top: 30px;
+    height: 120px;
+  }
+  
+  .staffs-wrapper {
+    gap: 40px;
+  }
+  
+  .piano-keyboard {
+    gap: 1px;
+    padding: 10px;
+  }
+  
+  .piano-key.white {
+    width: 40px;
+    height: 150px;
+  }
+  
+  .piano-key.black {
+    width: 30px;
+    height: 90px;
+    margin: 0 -15px;
+  }
+  
+  .piano-key .note-name {
+    font-size: 0.7rem;
+  }
+  
+  .piano-key .note-solfege {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .grand-staff {
+    width: 350px;
+  }
+  
+  .clef.treble {
+    font-size: 2.2rem;
+    left: 25px;
+    top: 5px;
+    height: 120px;
+  }
+  
+  .clef.bass {
+    font-size: 2rem;
+    left: 25px;
+    top: 25px;
+    height: 100px;
+  }
+  
+  .staff-line {
+    left: 25px;
+    right: 10px;
+  }
+  
+  .extra-line {
+    left: 25px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .grand-staff {
+    width: 300px;
+  }
+  
+  .clef.treble {
+    font-size: 2rem;
+    left: 20px;
+    top: 0;
+    height: 100px;
+  }
+  
+  .clef.bass {
+    font-size: 1.8rem;
+    left: 20px;
+    top: 20px;
+    height: 80px;
+  }
+  
+  .staff-line {
+    left: 20px;
+    right: 10px;
+  }
+  
+  .extra-line {
+    left: 20px;
+    right: 10px;
+  }
+  
+  .piano-key.white {
+    width: 35px;
+    height: 130px;
+  }
+  
+  .piano-key.black {
+    width: 25px;
+  height: 80px;
+  margin: 0 -12.5px;
+  }
+}
+
+/* Toast提示样式 */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.toast.success {
+  background-color: #4CAF50;
+}
+
+.toast.error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-weight: bold;
+  color: #555;
+}
+
+.control-group select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6' fill='%23333'%3E%3Cpath d='M0 0l6 6 6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+}
+
+.staff-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.grand-staff {
+  position: relative;
+  width: 500px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.staffs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.staff {
+  position: relative;
+  width: 100%;
+  height: 180px;
+}
+
+.staff-line {
+  position: absolute;
+  left: 40px;
+  right: 20px;
+  height: 2px;
+  background-color: #000;
+  opacity: 1;
+  z-index: 2;
+}
+
+/* 标准五线谱线位置 */
+.staff-line:nth-child(4) { top: 60px; }
+.staff-line:nth-child(5) { top: 80px; }
+.staff-line:nth-child(6) { top: 100px; }
+.staff-line:nth-child(7) { top: 120px; }
+.staff-line:nth-child(8) { top: 140px; }
+
+/* 额外的灰色线 */
+.extra-line {
+  position: absolute;
+  left: 60px;
+  right: 40px;
+  height: 1px;
+  background-color: #999;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* 上方额外线 */
+.extra-line.top-1 { top: 20px; }
+.extra-line.top-2 { top: 40px; }
+
+/* 下方额外线 */
+.extra-line.bottom-1 { top: 160px; }
+.extra-line.bottom-2 { top: 180px; }
+
+/* 连谱号（花括号） */
+.brace {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  bottom: 20px;
+  width: 20px;
+  border-left: 2px solid #000;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-radius: 10px 0 0 10px;
+  z-index: 1;
+}
+
+.clef {
+  position: absolute;
+  font-weight: bold;
+  font-family: 'Times New Roman', serif;
+  z-index: 1;
+}
+
+.clef.treble {
+  top: 18px;
+  left: 40px;
+  font-size: 4.5rem;
+  line-height: 1;
+  height: 180px;
+  display: flex;
+  align-items: center;
+}
+
+.clef.treble::before {
+  content: '𝄞';
+  position: relative;
+  top: 5px;
+}
+
+.clef.bass {
+  top: 14px;
+  left: 40px;
+  font-size: 4rem;
+  line-height: 1;
+  height: 160px;
+  display: flex;
+  align-items: center;
+}
+
+.clef.bass::before {
+  content: '𝄢';
+  position: relative;
+  top: -5px;
+}
+
+.time-signature {
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  font-size: 1rem;
+  font-family: 'Times New Roman', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  z-index: 2;
+}
+
+.time-signature::before {
+  content: '4';
+}
+
+.time-signature::after {
+  content: '4';
+  margin-top: 2px;
+}
+
+.center-c {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  font-weight: bold;
+  font-size: 1.2rem;
+  font-family: 'Times New Roman', serif;
+  color: #333;
+  z-index: 2;
+}
+
+/* 小节线 */
+.bar-line {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: 20px;
+  width: 1px;
+  background-color: #000;
+}
+
+/* 音符位置标记 */
+.note-position {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 4分音符样式优化 */
+.quarter-note {
+  position: relative;
+  width: 20px;
+  height: 14px;
+  background-color: #000;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  transform: rotate(-15deg);
+}
+
+.quarter-note::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 18px;
+  width: 2px;
+  height: 45px;
+  background-color: #000;
+  box-shadow: 0 0 1px rgba(0,0,0,0.3);
+  transform: rotate(15deg);
+  transform-origin: bottom center;
+}
+
+/* 音高显示样式 */
+.note-pitch {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #666;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.success-time {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #4CAF50;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.error-icon {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: bold;
+  color: #f44336;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* 帮助按钮样式 */
+.control-group.help-button {
+  display: flex;
+  align-items: center;
+}
+
+.help-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.help-icon:hover {
+  background-color: #e0e0e0;
+  border-color: #999;
+}
+
+/* 帮助弹窗样式 */
+.help-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.help-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #e0e0e0;
+  border-color: #999;
+}
+
+.help-content h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.help-content p {
+  margin-bottom: 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 高音谱表音符位置 - 从下往上：下加三间(G3)、下加二线(A3)、下加二间(B3)、下加一线(C4)、下加一间(D4)、第一线(E4)、第一间(F4)、第二线(G4)、第二间(A4)、第三线(B4)、第三间(C5)、第四线(D5)、第四间(E5)、第五线(F5)、第五间/上加一间(G5)、上加一线(A5)、上加二间(B5)、上加二线(C6)、上加三间(D6) */
+.note-position.treble-g3 {
+  left: 50%;
+  top: 180px;
+}
+.note-position.treble-a3 {
+  left: 50%;
+  top: 170px;
+}
+
+.note-position.treble-b3 {
+  left: 50%;
+  top: 160px;
+}
+
+.note-position.treble-c4 {
+  left: 50%;
+  top: 150px;
+}
+
+.note-position.treble-d4 {
+  left: 50%;
+  top: 140px;
+}
+
+.note-position.treble-e4 {
+  left: 50%;
+  top: 130px;
+}
+
+.note-position.treble-f4 {
+  left: 50%;
+  top: 120px;
+}
+
+.note-position.treble-g4 {
+  left: 50%;
+  top: 110px;
+}
+
+.note-position.treble-a4 {
+  left: 50%;
+  top: 100px;
+}
+
+.note-position.treble-b4 {
+  left: 50%;
+  top: 90px;
+}
+
+.note-position.treble-c5 {
+  left: 50%;
+  top: 80px;
+}
+
+.note-position.treble-d5 {
+  left: 50%;
+  top: 70px;
+}
+
+.note-position.treble-e5 {
+  left: 50%;
+  top: 60px;
+}
+
+.note-position.treble-f5 {
+  left: 50%;
+  top: 50px;
+}
+
+.note-position.treble-g5 {
+  left: 50%;
+  top: 40px;
+}
+
+.note-position.treble-a5 {
+  left: 50%;
+  top: 30px;
+}
+
+.note-position.treble-b5 {
+  left: 50%;
+  top: 20px;
+}
+
+.note-position.treble-c6 {
+  left: 50%;
+  top: 10px;
+}
+
+.note-position.treble-d6 {
+  left: 50%;
+  top: 0px;
+}
+
+/* 低音谱表音符位置 - 从下往上：下加三间(B1)、下加二线(C2)、下加二间(D2)、下加一线(E2)、下加一间(F2)、第一线(G2)、第一间(A2)、第二线(B2)、第二间(C3)、第三线(D3)、第三间(E3)、第四线(F3)、第四间(G3)、第五线(A3)、第五间(B3)、上加一线(C4)、上加一间(D4)、上加二线(E4)、上加三间(F4) */
+.note-position.bass-b1 {
+  left: 50%;
+  top: 180px;
+}
+
+.note-position.bass-c2 {
+  left: 50%;
+  top: 170px;
+}
+
+.note-position.bass-d2 {
+  left: 50%;
+  top: 160px;
+}
+
+.note-position.bass-e2 {
+  left: 50%;
+  top: 150px;
+}
+
+.note-position.bass-f2 {
+  left: 50%;
+  top: 140px;
+}
+
+.note-position.bass-g2 {
+  left: 50%;
+  top: 130px;
+}
+
+.note-position.bass-a2 {
+  left: 50%;
+  top: 120px;
+}
+
+.note-position.bass-b2 {
+  left: 50%;
+  top: 110px;
+}
+
+.note-position.bass-c3 {
+  left: 50%;
+  top: 100px;
+}
+
+.note-position.bass-d3 {
+  left: 50%;
+  top: 90px;
+}
+
+.note-position.bass-e3 {
+  left: 50%;
+  top: 80px;
+}
+
+.note-position.bass-f3 {
+  left: 50%;
+  top: 70px;
+}
+
+.note-position.bass-g3 {
+  left: 50%;
+  top: 60px;
+}
+
+.note-position.bass-a3 {
+  left: 50%;
+  top: 50px;
+}
+
+.note-position.bass-b3 {
+  left: 50%;
+  top: 40px;
+}
+
+.note-position.bass-c4 {
+  left: 50%;
+  top: 30px;
+}
+
+.note-position.bass-d4 {
+  left: 50%;
+  top: 20px;
+}
+
+.note-position.bass-e4 {
+  left: 50%;
+  top: 10px;
+}
+
+.note-position.bass-f4 {
+  left: 50%;
+  top: 0px;
+}
+
+.piano-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.piano-keyboard {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 20px;
+  background-color: #2c3e50;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: relative;
+  transform-origin: center;
+  min-width: 0;
+}
+
+.piano-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.piano-key.white {
+  width: 60px;
+  height: 200px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.piano-key.black {
+  width: 40px;
+  height: 120px;
+  background-color: black;
+  color: white;
+  margin: 0 -20px;
+  z-index: 1;
+  border-radius: 4px;
+}
+
+/* 中央C键位样式（严格模式下） */
+.piano-key.white.central-c {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  box-shadow: inset 0 0 10px rgba(72, 187, 120, 0.3);
+}
+
+.piano-key.white.central-c:hover {
+  background-color: #c3e6cb;
+  transform: translateY(-2px);
+}
+
+.piano-key.white.central-c:active {
+  background-color: #b1dfbb;
+  transform: translateY(0);
+}
+
+.piano-key:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.piano-key:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.piano-key .note-name {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.piano-key .note-solfege {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+
