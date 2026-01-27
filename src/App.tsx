@@ -458,12 +458,12 @@ function App() {
                 >
                   {showNames === 'both' && (
                     <>
-                      <div className="note-name">{key.name}</div>
+                      <div className="note-name">{strictMode ? key.name : key.name.replace(/\d+$/, '')}</div>
                       <div className="note-solfege">{key.solfege}</div>
                     </>
                   )}
                   {showNames === 'name' && (
-                    <div className="note-name">{key.name}</div>
+                    <div className="note-name">{strictMode ? key.name : key.name.replace(/\d+$/, '')}</div>
                   )}
                   {showNames === 'solfege' && (
                     <div className="note-solfege">{key.solfege}</div>
