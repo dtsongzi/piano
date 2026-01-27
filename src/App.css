@@ -780,7 +780,27 @@ h1 {
   display: flex;
   justify-content: center;
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0.1);
+}
+
+.piano-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.piano-container::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+.piano-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);
+  border-radius: 3px;
+}
+
+.piano-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.4);
 }
 
 .piano-keyboard {
@@ -794,6 +814,8 @@ h1 {
   position: relative;
   transform-origin: center;
   min-width: 0;
+  margin: 0 auto;
+  white-space: nowrap;
 }
 
 .piano-key {
@@ -809,7 +831,7 @@ h1 {
 }
 
 .piano-key.white {
-  width: 60px;
+  width: 28px;
   height: 200px;
   background-color: white;
   border: 1px solid #ddd;
@@ -817,11 +839,11 @@ h1 {
 }
 
 .piano-key.black {
-  width: 40px;
+  width: 20px;
   height: 120px;
   background-color: black;
   color: white;
-  margin: 0 -20px;
+  margin: 0 -10px;
   z-index: 1;
   border-radius: 4px;
 }
