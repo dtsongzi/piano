@@ -453,7 +453,7 @@ function App() {
               return (
                 <div 
                   key={key.name} 
-                  className={`piano-key ${key.type} ${isCentralC ? 'central-c' : ''}`}
+                  className={`piano-key ${key.type} ${isCentralC ? 'central-c' : ''} ${strictMode ? 'strict-mode-key' : ''}`}
                   onClick={() => handleKeyPress(key.name)}
                 >
                   {showNames === 'both' && (

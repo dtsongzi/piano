@@ -844,13 +844,19 @@ h1 {
 }
 
 .piano-key.black {
-  width: 24px;
+  width: 20px;
   height: 120px;
   background-color: black;
   color: white;
-  margin: 0 -12px;
+  margin: 0 -10px;
   z-index: 1;
   border-radius: 4px;
+}
+
+/* 严格模式下的黑键字体调整 */
+.piano-key.strict-mode-key.black .note-name,
+.piano-key.strict-mode-key.black .note-solfege {
+  font-size: 0.6rem;
 }
 
 /* 中央C键位样式（严格模式下） */
