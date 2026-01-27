@@ -777,12 +777,11 @@ h1 {
 
 .piano-container {
   margin: 2rem 0;
-  display: flex;
-  justify-content: center;
   width: 100%;
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0.1);
+  padding: 0 20px;
 }
 
 .piano-container::-webkit-scrollbar {
@@ -803,6 +802,13 @@ h1 {
   background: rgba(0,0,0,0.4);
 }
 
+.piano-keyboard-wrapper {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
 .piano-keyboard {
   display: flex;
   align-items: flex-start;
@@ -814,7 +820,6 @@ h1 {
   position: relative;
   transform-origin: center;
   min-width: 0;
-  margin: 0 auto;
   white-space: nowrap;
 }
 

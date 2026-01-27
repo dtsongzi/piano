@@ -442,34 +442,36 @@ function App() {
       </div>
       
       <div className="piano-container">
-        <div className="piano-keyboard" ref={keyboardRef}>
-          {(strictMode ? pianoKeys : pianoKeys.filter(key => {
-            // 在非严格模式下，只显示包含中央C（C4）的八度
-            const c4OctaveKeys = ['C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'];
-            return c4OctaveKeys.includes(key.name);
-          })).map((key) => {
-            const isCentralC = strictMode && key.name === 'C4';
-            return (
-              <div 
-                key={key.name} 
-                className={`piano-key ${key.type} ${isCentralC ? 'central-c' : ''}`}
-                onClick={() => handleKeyPress(key.name)}
-              >
-                {showNames === 'both' && (
-                  <>
+        <div className="piano-keyboard-wrapper">
+          <div className="piano-keyboard" ref={keyboardRef}>
+            {(strictMode ? pianoKeys : pianoKeys.filter(key => {
+              // 在非严格模式下，只显示包含中央C（C4）的八度
+              const c4OctaveKeys = ['C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'];
+              return c4OctaveKeys.includes(key.name);
+            })).map((key) => {
+              const isCentralC = strictMode && key.name === 'C4';
+              return (
+                <div 
+                  key={key.name} 
+                  className={`piano-key ${key.type} ${isCentralC ? 'central-c' : ''}`}
+                  onClick={() => handleKeyPress(key.name)}
+                >
+                  {showNames === 'both' && (
+                    <>
+                      <div className="note-name">{key.name}</div>
+                      <div className="note-solfege">{key.solfege}</div>
+                    </>
+                  )}
+                  {showNames === 'name' && (
                     <div className="note-name">{key.name}</div>
+                  )}
+                  {showNames === 'solfege' && (
                     <div className="note-solfege">{key.solfege}</div>
-                  </>
-                )}
-                {showNames === 'name' && (
-                  <div className="note-name">{key.name}</div>
-                )}
-                {showNames === 'solfege' && (
-                  <div className="note-solfege">{key.solfege}</div>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       
