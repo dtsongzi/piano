@@ -4,7 +4,7 @@ import './App.css'
 function App() {
   const [showNames, setShowNames] = useState<'both' | 'name' | 'solfege' | 'none'>('none')
   const [showPitch, setShowPitch] = useState<boolean>(false)
-  const [strictMode, setStrictMode] = useState<boolean>(true)
+  const [strictMode, setStrictMode] = useState<boolean>(false)
   const [staffMode, setStaffMode] = useState<'both' | 'treble' | 'bass'>('both')
   const [noteStartTime, setNoteStartTime] = useState<number | null>(null)
   const [successTime, setSuccessTime] = useState<number | null>(null)
@@ -290,8 +290,15 @@ function App() {
         const appElement = document.querySelector('.app')
         const containerWidth = appElement?.clientWidth || window.innerWidth
         
+        // 确定当前显示的键盘键
+        const displayedKeys = strictMode ? pianoKeys : pianoKeys.filter(key => {
+          // 在非严格模式下，只显示包含中央C（C4）的八度
+          const c4OctaveKeys = ['C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'];
+          return c4OctaveKeys.includes(key.name);
+        })
+        
         // 正确计算键盘原始宽度：只考虑白色键、间隙和padding
-        const whiteKeys = pianoKeys.filter(key => key.type === 'white').length
+        const whiteKeys = displayedKeys.filter(key => key.type === 'white').length
         const whiteKeyWidth = 60
         const gap = 2
         const padding = 40 // 左右各20px
@@ -300,19 +307,25 @@ function App() {
         // 考虑一些安全边距
         const availableWidth = containerWidth - 40 // 减去额外的边距
         
-        if (availableWidth < keyboardWidth) {
-          const scale = availableWidth / keyboardWidth
-          keyboardRef.current.style.transform = `scale(${scale})`
-        } else {
-          keyboardRef.current.style.transform = 'scale(1)'
-        }
+        // 计算缩放比例，限制最小为0.5，最大为1
+        let scale = availableWidth / keyboardWidth
+        scale = Math.max(scale, 0.5)
+        scale = Math.min(scale, 1)
+        
+        // 应用缩放
+        keyboardRef.current.style.transform = `scale(${scale})`
+        
+        // 为了防止容器压缩，设置键盘容器的最小宽度为缩放后的宽度
+        // 这样即使页面宽度很小，键盘也能保持在0.5的缩放比例
+        const scaledWidth = Math.max(340, keyboardWidth * scale)
+        keyboardRef.current.style.minWidth = `${scaledWidth}px`
       }
     }
 
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [pianoKeys])
+  }, [pianoKeys, strictMode])
 
   return (
     <div className="app">
