@@ -324,11 +324,11 @@ h1 {
   position: absolute;
   font-weight: bold;
   font-family: 'Times New Roman', serif;
-  z-index: 1;
+  z-index: 0;
 }
 
 .clef.treble {
-  top: 18px;
+  top: 60px;
   left: 40px;
   font-size: 4.5rem;
   line-height: 1;
@@ -338,13 +338,19 @@ h1 {
 }
 
 .clef.treble::before {
-  content: '𝄞';
+  content: '';
+  background-image: url('/piano/treble-clef.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+  width: 60px;
+  height: 180px;
   position: relative;
   top: 5px;
 }
 
 .clef.bass {
-  top: 14px;
+  top: 49px;
   left: 40px;
   font-size: 4rem;
   line-height: 1;
@@ -354,7 +360,13 @@ h1 {
 }
 
 .clef.bass::before {
-  content: '𝄢';
+  content: '';
+  background-image: url('/piano/bass-clef.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+  width: 60px;
+  height: 160px;
   position: relative;
   top: -5px;
 }

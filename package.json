@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://zqlspace.github.io/piano",
+  "homepage": "https://dtsongzi.github.io/piano",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
