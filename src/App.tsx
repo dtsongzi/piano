@@ -231,10 +231,10 @@ function App() {
         const timeTaken = Date.now() - noteStartTime
         setSuccessTime(timeTaken)
       }
-      // 2秒后生成下一个音符
+      // 快速生成下一个音符
       setTimeout(() => {
         generateRandomNote()
-      }, 1500)
+      }, 100)
     } else {
       // 设置错误状态
       setIsError(true)
